@@ -1,4 +1,3 @@
-// src/screens/AboutScreen.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Modal, StyleSheet } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
