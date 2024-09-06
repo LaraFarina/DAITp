@@ -8,6 +8,7 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer>
         <Router />  {/* Usa el componente Router para manejar la navegación */}
+        
       </NavigationContainer>
     </SafeAreaProvider>
   );
