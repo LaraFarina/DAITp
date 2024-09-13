@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import EmergencyNumberScreen from '../screens/EmergencyNumberScreen';
 import VideoScreen from '../screens/VideoScreen';
-
+import AboutScreen from '../screens/AboutScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -25,6 +25,11 @@ export default function BottomTabNavigator() {
         name="Video" 
         component={VideoScreen} 
         options={{ tabBarLabel: 'Video' }} 
+      />
+      <Tab.Screen 
+        name="About" 
+        component={AboutScreen} 
+        options={{ tabBarLabel: 'About' }} 
       />
       
     </Tab.Navigator>
