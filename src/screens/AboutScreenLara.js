@@ -3,14 +3,14 @@ import { View, Text, Button, Modal, StyleSheet } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-const AboutScreen = () => {
+const AboutScreenLara = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scannedData, setScannedData] = useState('');
 
-  // Nombres de los integrantes del grupo
-  const groupMembers = "Integrantes: Juan, María, Luis";
+  // Nombres de los integrantes del grupo Lara
+  const groupMembers = "Integrantes: Lara, Ana, Pedro";
 
   useEffect(() => {
     // Solicitar permiso para usar la cámara
@@ -37,7 +37,7 @@ const AboutScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Acerca de</Text>
+      <Text style={styles.title}>Acerca de Lara</Text>
       <QRCode
         value={groupMembers}
         size={200}
@@ -102,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AboutScreen;
+export default AboutScreenLara;
