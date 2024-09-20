@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import EmergencyNumberScreen from '../screens/EmergencyNumberScreen';
 import VideoScreen from '../screens/VideoScreen';
 import AboutScreen from '../screens/AboutScreen';
+import Clima from '../screens/Clima';
 
 
 const Tab = createBottomTabNavigator();
@@ -20,6 +21,11 @@ export default function BottomTabNavigator() {
         name="Emergency" 
         component={EmergencyNumberScreen} 
         options={{ tabBarLabel: 'Emergencia' }} 
+      />
+       <Tab.Screen 
+        name="Clima" 
+        component={Clima} 
+        options={{ tabBarLabel: 'Clima' }} 
       />
       <Tab.Screen 
         name="Video" 

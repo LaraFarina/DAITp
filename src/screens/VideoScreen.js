@@ -16,7 +16,7 @@ export default function VideoScreen() {
           setSavedVideoUrl(url);
         }
       } catch (e) {
-        console.error('Error al cargar el URL guardado', e);
+        console.error('Error al cargar la URL guardado', e);
       }
     };
     loadVideoUrl();

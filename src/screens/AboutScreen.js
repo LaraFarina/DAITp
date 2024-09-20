@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Modal } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
@@ -46,18 +45,7 @@ const AboutScreen = ({ navigation }) => {
       <Text style={styles.title}>Acerca de</Text>
 
       <View style={styles.qrContainer}>
-        <QRCode value="lara" size={100} />
-        <Text>Lara</Text>
-      </View>
-
-      <View style={styles.qrContainer}>
-        <QRCode value="vicente" size={100} />
-        <Text>Vicente</Text>
-      </View>
-
-      <View style={styles.qrContainer}>
-        <QRCode value="eitan" size={100} />
-        <Text>Eitan</Text>
+        <QRCode value="Hecho por: Lara, Eitan y Vicente" size={100} />
       </View>
 
       <Button title="Escanear QR" onPress={() => setModalVisible(true)} />
