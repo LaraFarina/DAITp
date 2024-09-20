@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Modal, TouchableOpacity, Alert, Linking } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { Camera, useCameraPermissions } from 'expo-camera'; // Cambia a Camera
+import { CameraView, useCameraPermissions } from 'expo-camera'; // Cambia a Camera
 
 const AboutScreen = () => {
   const [hasPermission, requestPermission] = useCameraPermissions();
@@ -21,6 +21,7 @@ const AboutScreen = () => {
   }, [hasPermission]);
 
   const handleBarCodeScanned = async ({ type, data }) => {
+    console.log("hola lelgamos a l afuncion")
     setScanned(true);
     setModalVisible(false);
     // Aquí puedes manejar el escaneo, por ejemplo, abrir la URL
@@ -55,10 +56,10 @@ const AboutScreen = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.scannerContainer}>
-            <Camera
+            <CameraView
               style={{ flex: 1 }}
               type={facing}
-              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+              onBarcodeScanned={handleBarCodeScanned}
               barCodeScannerSettings={{
                 barCodeTypes: ['qr'],
               }}
