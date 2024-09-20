@@ -5,7 +5,6 @@ import VideoScreen from '../screens/VideoScreen';
 import AboutScreen from '../screens/AboutScreen';
 import Clima from '../screens/Clima';
 
-
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
@@ -22,7 +21,7 @@ export default function BottomTabNavigator() {
         component={EmergencyNumberScreen} 
         options={{ tabBarLabel: 'Emergencia' }} 
       />
-       <Tab.Screen 
+      <Tab.Screen 
         name="Clima" 
         component={Clima} 
         options={{ tabBarLabel: 'Clima' }} 
@@ -37,7 +36,6 @@ export default function BottomTabNavigator() {
         component={AboutScreen} 
         options={{ tabBarLabel: 'About' }} 
       />
-      
     </Tab.Navigator>
   );
 }

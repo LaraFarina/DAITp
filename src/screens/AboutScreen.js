@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Modal } from 'react-native';
+import { View, Text, Button, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
@@ -56,12 +56,22 @@ const AboutScreen = ({ navigation }) => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalView}>
-          <BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={StyleSheet.absoluteFillObject}
-          />
-          <Button title="Cerrar" onPress={() => setModalVisible(false)} />
+        <View style={styles.modalContainer}>
+          <View style={styles.scannerContainer}>
+            <BarCodeScanner
+              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+              style={StyleSheet.absoluteFillObject}
+            />
+          </View>
+          <View style={styles.bottomContainer}>
+            <Text style={styles.scanningText}>Escaneando...</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>
@@ -83,10 +93,37 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'center',
   },
-  modalView: {
+  modalContainer: {
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'space-between',
+  },
+  scannerContainer: {
+    flex: 1,
+    marginTop: 100,
+    marginBottom: 20,
+    justifyContent: 'center',
+  },
+  bottomContainer: {
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  scanningText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  closeButton: {
+    backgroundColor: '#2196F3',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 
