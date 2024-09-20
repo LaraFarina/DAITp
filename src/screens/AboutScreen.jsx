@@ -7,7 +7,9 @@ const AboutScreen = () => {
   const [hasPermission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modal2Visible,setModal2Visible] = useState(false)
   const [facing, setFacing] = useState("back");
+  const [informacionScaneada,setInformacionScaneada] = useState(null)
 
   useEffect(() => {
     (async () => {
@@ -23,18 +25,16 @@ const AboutScreen = () => {
   const handleBarCodeScanned = async ({ type, data }) => {
     console.log("hola lelgamos a l afuncion")
     setScanned(true);
+    setInformacionScaneada(data)
     setModalVisible(false);
+    setModal2Visible(true)
     // Aquí puedes manejar el escaneo, por ejemplo, abrir la URL
-    try {
-      await Linking.openURL(data);
-    } catch (err) {
-      Alert.alert('Error', 'No se pudo abrir la URL');
-    }
+    
     // Restablecer el escaneo después de un breve delay
     setTimeout(() => {
       setScanned(false);
       setModalVisible(true);
-    }, 2000);
+    }, 5000);
   };
 
   if (!hasPermission || hasPermission.status !== 'granted') {
@@ -48,6 +48,7 @@ const AboutScreen = () => {
         <QRCode value="Hecho por: Lara, Eitan y Vicente" size={100} />
       </View>
       <Button title="Escanear QR" onPress={() => setModalVisible(true)} />
+      <Text>{informacionScaneada}</Text>
       <Modal
         animationType="slide"
         transparent={true}
@@ -84,6 +85,7 @@ const AboutScreen = () => {
             >
               <Text style={styles.closeButtonText}>Cambiar Cámara</Text>
             </TouchableOpacity>
+            
           </View>
         </View>
       </Modal>
