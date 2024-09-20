@@ -1,55 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Modal, TouchableOpacity, Alert, Linking } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Camera, useCameraPermissions } from 'expo-camera'; // Cambia a Camera
 
-const AboutScreen = ({ navigation }) => {
-  const [hasPermission, setHasPermission] = useState(null);
+const AboutScreen = () => {
+  const [hasPermission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [facing, setFacing] = useState("back");
 
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    };
+    (async () => {
+      if (!hasPermission) {
+        const { status } = await requestPermission();
+        if (status !== 'granted') {
+          Alert.alert('Permiso de cámara denegado');
+        }
+      }
+    })();
+  }, [hasPermission]);
 
-    getBarCodeScannerPermissions();
-  }, []);
-
-  const handleBarCodeScanned = ({ data }) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     setModalVisible(false);
-
-    // Navegar a la pantalla correspondiente basándose en el QR escaneado
-    if (data === 'lara') {
-      navigation.navigate('Lara');
-    } else if (data === 'vicente') {
-      navigation.navigate('Vicente');
-    } else if (data === 'eitan') {
-      navigation.navigate('Eitan');
-    } else {
-      alert('Código QR no reconocido');
+    // Aquí puedes manejar el escaneo, por ejemplo, abrir la URL
+    try {
+      await Linking.openURL(data);
+    } catch (err) {
+      Alert.alert('Error', 'No se pudo abrir la URL');
     }
+    // Restablecer el escaneo después de un breve delay
+    setTimeout(() => {
+      setScanned(false);
+      setModalVisible(true);
+    }, 2000);
   };
 
-  if (hasPermission === null) {
-    return <Text>Solicitando permiso para la cámara...</Text>;
-  }
-  if (hasPermission === false) {
-    return <Text>Sin acceso a la cámara</Text>;
+  if (!hasPermission || hasPermission.status !== 'granted') {
+    return <View style={styles.centeredView}><Text>Solicitando permisos para la cámara...</Text></View>;
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Acerca de</Text>
-
       <View style={styles.qrContainer}>
         <QRCode value="Hecho por: Lara, Eitan y Vicente" size={100} />
       </View>
-
       <Button title="Escanear QR" onPress={() => setModalVisible(true)} />
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -58,18 +55,33 @@ const AboutScreen = ({ navigation }) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.scannerContainer}>
-            <BarCodeScanner
+            <Camera
+              style={{ flex: 1 }}
+              type={facing}
               onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-              style={StyleSheet.absoluteFillObject}
+              barCodeScannerSettings={{
+                barCodeTypes: ['qr'],
+              }}
             />
           </View>
           <View style={styles.bottomContainer}>
             <Text style={styles.scanningText}>Escaneando...</Text>
             <TouchableOpacity
               style={styles.closeButton}
-              onPress={() => setModalVisible(false)}
+              onPress={() => {
+                setScanned(false);
+                setModalVisible(false);
+              }}
             >
               <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => {
+                setFacing(facing === "back" ? "front" : "back");
+              }}
+            >
+              <Text style={styles.closeButtonText}>Cambiar Cámara</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -100,8 +112,6 @@ const styles = StyleSheet.create({
   },
   scannerContainer: {
     flex: 1,
-    marginTop: 100,
-    marginBottom: 20,
     justifyContent: 'center',
   },
   bottomContainer: {
@@ -120,10 +130,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    marginVertical: 5,
   },
   closeButtonText: {
     color: 'white',
     fontSize: 16,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  message: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });
 
