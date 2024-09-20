@@ -5,7 +5,6 @@ import AlertaError from './AlertaError.js';
 
 const EmergencyNumberScreen = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
     const [storedNumber, setStoredNumber] = useState('');
 
     useEffect(() => {
